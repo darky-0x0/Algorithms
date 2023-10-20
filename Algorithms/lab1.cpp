@@ -164,19 +164,19 @@ void task6() {
 
 
 int bigNums(Chain* first) {
-    int cout(0);
+    int count(0);
 
     int bigNum = first->data;
     first = first->next;
 
     while (first != NULL) {
-        if (first->data > bigNum) cout++;
+        if (first->data > bigNum) count++;
 
         first = first->next;
 
     }
 
-    return cout;
+    return count;
 
 }
 
@@ -229,7 +229,7 @@ float average(Chain* first) {
 
     }
 
-    return summ / count;
+    return (float)summ / count;
 
 }
 
@@ -270,7 +270,7 @@ int maxEl(Chain* first) {
 
     int maxElement(first->data);
 
-    first->next;
+    first = first->next;
 
     while (first != NULL) {
 
