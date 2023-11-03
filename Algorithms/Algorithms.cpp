@@ -4,6 +4,7 @@
 #include "lab2.h"
 #include "lab3.h"
 
+
 int main()
 {
         
@@ -18,6 +19,11 @@ int main()
 		break;
 
 	}
+	case 2: {
+		mainMenuLab2();
+		break;
+
+	}
 	default:
 		std::cout << "Некорректный номер";
 		break;
@@ -28,6 +34,4 @@ int main()
 
 	std::cin.get(); std::cin.get();
 
-
-	//gfff
 }
