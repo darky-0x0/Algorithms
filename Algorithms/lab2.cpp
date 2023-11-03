@@ -56,7 +56,7 @@ void mainMenuLab2() {
 		create2Lists(list, list1, list2);
 
 		std::cout << "\nИсходный список: ";
-		printChain(sortList(list));
+		printChain(list);
 
 		std::cout << "\nСписок только положительных: ";
 		printChain(list1);
@@ -69,10 +69,28 @@ void mainMenuLab2() {
 	}
 	case 4: {
 
+		Chain* list1(readFromFile("input1.txt")), * list2(readFromFile("input2.txt"));
+
+		std::cout << "\nПервый список: "; printChain(list1);
+		std::cout << "\nВторой список: "; printChain(list2);
+
+		Chain* list(join2Lists2(list1, list2));
+		std::cout << "\n\nКонечный список: "; printChain(list);
+
 		break;
 
 	}
 	case 5: {
+
+		Chain* list1 = createLinealList();
+		Chain* list2 = createLinealList();
+
+		std::cout << "\nВведите элемент x\n\\"; int x; std::cin >> x;
+
+		editChains(list1, list2, x);
+
+		std::cout << "\nПервый изменённый список: "; printChain(list1);
+		std::cout << "\nВторой изменённый список: "; printChain(list2);
 
 		break;
 
@@ -432,6 +450,91 @@ void create2Lists(Chain* chain, Chain*& ch1, Chain*& ch2) {
 			last = last->next;
 
 		}
+
+	}
+
+}
+
+Chain* join2Lists2(Chain* first, Chain* second) {
+
+	Chain* tempSecond = second;
+	Chain* tempFirst = first;
+	Chain* list = new Chain;
+	Chain* ind = list;
+
+	while ((tempFirst != NULL) && (tempSecond != NULL)) {
+
+		ind->next = new Chain;
+		ind = ind->next;
+		ind->data = tempFirst->data + tempSecond->data;
+		ind->next = NULL;
+
+		tempFirst = tempFirst->next;
+		tempSecond = tempSecond->next;
+
+	}
+
+	list = list->next;
+
+	return list;
+
+}
+
+Chain* readFromFile(std::string fileName) {
+
+	std::ifstream file;
+	file.open(fileName);
+
+	Chain* list = NULL;
+	Chain* ind = NULL;
+
+	if (file.is_open()) {
+
+		while (!file.eof()) {
+
+			if (ind == NULL) {
+
+				list = new Chain;
+				ind = list;
+
+				file >> ind->data;
+				ind->next = NULL;
+
+			}
+			else {
+
+				ind->next = new Chain;
+				ind = ind->next;
+
+				file >> ind->data;
+				ind->next = NULL;
+
+			}
+
+		}
+
+		file.close();
+	
+	}
+
+	return list;
+
+}
+
+void editChains(Chain*& first, Chain*& second, int x) {
+
+	while ((first != NULL) && (first->data != x)) {
+
+		Chain* temp = new Chain;
+		temp->data = first->data;
+		temp->next = second;
+		second = temp;
+
+		Chain* ind = first->next;
+
+		delete first;
+
+		first = ind;
 
 	}
 
