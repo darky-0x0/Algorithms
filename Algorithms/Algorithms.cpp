@@ -7,17 +7,25 @@
 int main()
 {
         
+	setlocale(0, "");
+
     std::cout << "Номер лабы:\n\\"; int labNum; std::cin >> labNum;
 
 	switch (labNum)
 	{
 	case 1: {
-		
-		
+		mainMenuLab1();
+		break;
 
 	}
 	default:
+		std::cout << "Некорректный номер";
 		break;
+
 	}
+
+
+
+	std::cin.get(); std::cin.get();
 
 }
