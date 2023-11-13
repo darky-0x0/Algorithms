@@ -97,6 +97,8 @@ void mainMenuLab2() {
 	}
 	case 6: {
 
+		//helpmepls
+
 		break;
 
 	}
