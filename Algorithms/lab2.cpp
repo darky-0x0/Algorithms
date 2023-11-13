@@ -97,12 +97,27 @@ void mainMenuLab2() {
 	}
 	case 6: {
 
-		//helpmepls
+		Chain* list = createLinealList();
+
+		std::cout << "\nВведите элемент z\n\\"; int z; std::cin >> z;
+
+		editChains2(list, z);
+
+		std::cout << "\nИзменённый список: "; printChain(list);
 
 		break;
 
 	}
 	case 7: {
+
+		Chain* list = createLinealList();
+
+		std::cout << "\nВведите вставляемый элемент x\n\\"; int x; std::cin >> x;
+		std::cout << "\nВведите элемент z\n\\"; int z; std::cin >> z;
+
+		editChains3(list, x, z);
+
+		std::cout << "\nИзменённый список: "; printChain(list);
 
 		break;
 
@@ -537,6 +552,81 @@ void editChains(Chain*& first, Chain*& second, int x) {
 		delete first;
 
 		first = ind;
+
+	}
+
+}
+
+
+void editChains2(Chain*& list, int z) {
+
+	Chain* chain = list;
+	Chain* preview = NULL;
+
+	while ((chain != NULL) && (chain->data != 0)) {
+		if (chain->data == z) {
+			if (preview == NULL) {
+				Chain* temp = chain->next;
+				delete chain;
+				chain = temp;
+				list = temp;
+
+			}
+			else if (chain->next == NULL) {
+				Chain* temp = preview->next;
+				delete temp;
+				preview->next = NULL;
+				chain = preview;
+
+			}
+			else {
+				Chain* temp = chain->next;
+				delete chain;
+				preview->next = temp;
+				chain = temp;
+
+
+			}
+
+		}
+		else {
+			preview = chain;
+			chain = chain->next;
+
+		}
+
+	}
+
+}
+
+
+void editChains3(Chain*& list, int x, int z) {
+
+	Chain* chain = list;
+	Chain* preview = NULL;
+
+	while (chain != NULL) {
+
+		if (chain->data == z) {
+			Chain* temp = new Chain;
+			temp->data = x;
+			temp->next = chain;
+
+			if (preview == NULL) { 
+				list = temp;
+
+			}
+			else {
+				preview->next = temp;
+
+			}
+			
+
+		}
+
+		preview = chain;
+		chain = chain->next;
+
 
 	}
 

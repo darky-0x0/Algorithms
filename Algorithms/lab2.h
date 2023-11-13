@@ -17,4 +17,6 @@ Chain* join2Lists(Chain*, Chain*);
 void create2Lists(Chain*, Chain*&, Chain*&);
 Chain* join2Lists2(Chain*, Chain*);
 Chain* readFromFile(std::string);
-void editChains(Chain*&, Chain*&, int x);
+void editChains(Chain*&, Chain*&, int);
+void editChains2(Chain*&, int);
+void editChains3(Chain*&, int, int);
