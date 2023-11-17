@@ -35,6 +35,16 @@ void mainMenuLab3() {
 		break;
 
 	}
+	case 4: {
+		lab3task4();
+		break;
+
+	}
+	case 5: {
+		lab3task5();
+		break;
+
+	}
 	default: {
 		std::cout << "Некорректный номер\n\\";
 		break;
@@ -308,5 +318,63 @@ void chain5Pop(Chain5*& stack) {
 	Chain5* temp = stack->next;
 	delete stack;
 	stack = temp;
+
+}
+
+void lab3task4() {
+	Chain* stack1 = NULL;
+	Chain* stack2 = NULL;
+	std::ifstream in;
+	std::ofstream out;
+	in.open("input4.txt");
+	out.open("output4.txt");
+
+	std::cout << "Введите границы отрезка [a, b]: ";
+	int a, b; std::cin >> a >> b;
+
+	int num;
+	std::string str;
+
+	while (std::getline(in, str)) {
+
+		std::stringstream ss(str);
+
+		while (!ss.eof()) {
+			ss >> num;
+			if (num < a) {
+				out << num << ' ';
+
+			}
+			else if (num < b) {
+				(num);
+
+			}
+			else {
+				push_2(num);
+
+			}
+
+		}
+
+		while (!empty_1()) {
+			pop_1(num);
+			fout << num << ' ';
+
+		}
+		out << "\n";
+		while (!empty_2()) {
+			pop_2(num);
+			fout << num << ' ';
+
+		}
+
+	}
+	std::cout << "output_4.txt готов.\n\n";
+
+}
+
+void lab3task5() {
+
+
 
 }
