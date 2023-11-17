@@ -123,8 +123,7 @@ void mainMenuLab2() {
 
 	}
 	default:
-
-		std::cout << "Некорректный номер";
+		std::cout << "Некорректный номер\n\\";
 		break;
 
 	}

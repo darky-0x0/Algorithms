@@ -5,33 +5,45 @@
 #include "lab3.h"
 
 
-int main()
-{
-        
-	setlocale(0, "");
+int main() {
+	int replace(0);
 
-    std::cout << "Номер лабы:\n\\"; int labNum; std::cin >> labNum;
-
-	switch (labNum)
+	do
 	{
-	case 1: {
-		mainMenuLab1();
-		break;
+		system("cls");
+		setlocale(0, "");
 
-	}
-	case 2: {
-		mainMenuLab2();
-		break;
+		std::cout << "Номер лабы:\n\\"; int labNum; std::cin >> labNum;
 
-	}
-	default:
-		std::cout << "Некорректный номер";
-		break;
+		switch (labNum)
+		{
+		case 1: {
+			mainMenuLab1();
+			break;
 
-	}
+		}
+		case 2: {
+			mainMenuLab2();
+			break;
 
+		}
+		case 3: {
+			mainMenuLab3();
+			break;
 
+		}
+		default:
+			std::cout << "Некорректный номер";
+			break;
 
-	std::cin.get(); std::cin.get();
+		}
+
+		
+
+		std::cin >> replace;
+
+		system("cls");
+
+	} while (replace != 0);
 
 }

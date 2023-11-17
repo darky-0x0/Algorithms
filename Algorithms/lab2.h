@@ -1,9 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <string.h>
-#include <fstream>
-#include <sstream>
 #include "lab1.h"
 
 
