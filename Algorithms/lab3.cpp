@@ -101,8 +101,8 @@ float PolishWrite(std::string str) {
 	bool isError(NULL);
 
 	for (int i = 0; (i < str.size()) && (numbersType == NULL); i++) { //автоопрделние типов чисел
-		if (isOperand(str[i])) {
-			if ((i != 0) && (str[i - 1] == ' ')) numbersType = 'b';
+		if ((i != 0) && isOperand(str[i])) {
+			if ((str[i - 1] == ' ')) numbersType = 'b';
 			else numbersType = 'a';
 
 		}
@@ -118,7 +118,7 @@ float PolishWrite(std::string str) {
 
 		for (int i = 0; (i < str.size()) && isError == false; i++) { //идём до конца строки или до первой ошибки
 			bool isNegativeNumber = false;
-			if (i < str.size() && numbersType == 'b' && str[i] == 45 && isDigit(str[i])) isNegativeNumber = true; //определение унарного/бинарного минуса (если во втором случае после минуса стоит число, а не пробел, значит он унарный)
+			if (str[i] == '-' && i < str.size()-1 && numbersType == 'b' && str[i + 1] != ' ') isNegativeNumber = true; //определение унарного/бинарного минуса (если во втором случае после минуса стоит число, а не пробел, значит он унарный)
 
 			if (isDigit(str[i]) || isNegativeNumber) { //добавление числа в стек
 				Chain4* temp = new Chain4;
@@ -176,11 +176,10 @@ float PolishWrite(std::string str) {
 
 	if ((stack != NULL && stack->next == NULL) && isError == false) {
 		std::cout << "\nРезультат операций: " << stack->data;
+		return stack->data;
 
 	}
 	else if(isError == true) std::cout << "\nНеверный формат выражения";
-
-	return stack->data;
 
 }
 
@@ -241,30 +240,30 @@ void PolishWriting(std::string str) {
 			if ((str[i] == ')')) {
 				while (stack->data != '(') { //выход из скобок
 					result += stack->data;
-					chain5Pop(stack);
+					chain5Read(stack);
 
 				}
-				chain5Pop(stack);
+				chain5Read(stack);
 
 			}
 			else if (str[i] == '(' || stack == NULL || isPriority(stack->data, str[i])) {
-				chain5PushBack(stack, str[i]);
+				chain5Write(stack, str[i]);
 
 			}
 			else {
 				do
 				{
 					result += stack->data;
-					chain5Pop(stack);
+					chain5Read(stack);
 
 				} while (stack != NULL && stack->data != '(' && (isPriority(stack->data, str[i])));
 
 				if (stack != NULL && stack->data == '(') {
-					chain5Pop(stack);
+					chain5Read(stack);
 
 				}
 
-				chain5PushBack(stack, str[i]);
+				chain5Write(stack, str[i]);
 
 			}
 
@@ -274,7 +273,7 @@ void PolishWriting(std::string str) {
 
 	while (stack != NULL) {
 		result += stack->data;
-		chain5Pop(stack);
+		chain5Read(stack);
 
 	}
 
@@ -296,17 +295,25 @@ bool isDigit(int asciiCod) {
 }
 
 bool isPriority(int a, int b) {
-	std::vector<int> priority = { 40, 43, 45, 37, 47, 42, 93 }; //ASCII операндов
+	int preorityA;
+	int preorityB;
 
-	for (int i = 0; i < priority.size(); i++) {
-		if (priority[i] == a) return true;
-		else if (priority[i] == b) return false;
+	if (a == '^') preorityA = 1;
+	else if (a == '*' || a == '/') preorityA = 2;
+	else if (a == '+' || a == '-') preorityA = 3;
+	else preorityA = 4;
 
-	}
+	if (b == '^') preorityB = 1;
+	else if (b == '*' || b == '/') preorityB = 2;
+	else if (b == '+' || b == '-') preorityB = 3;
+	else preorityB = 4;
+
+	if (preorityA < preorityB) return true;
+	else return false;
 
 }
 
-void chain5PushBack(Chain5*& stack, char chr) {
+void chain5Write(Chain5*& stack, char chr) {
 	Chain5* temp = new Chain5;
 	temp->data = chr;
 	temp->next = stack;
@@ -314,7 +321,7 @@ void chain5PushBack(Chain5*& stack, char chr) {
 
 }
 
-void chain5Pop(Chain5*& stack) {
+void chain5Read(Chain5*& stack) {
 	Chain5* temp = stack->next;
 	delete stack;
 	stack = temp;
@@ -322,8 +329,10 @@ void chain5Pop(Chain5*& stack) {
 }
 
 void lab3task4() {
-	Chain* stack1 = NULL;
-	Chain* stack2 = NULL;
+	Chain* queue1 = NULL;
+	Chain* queue1End = queue1;
+	Chain* queue2 = NULL;
+	Chain* queue2End = queue2;
 	std::ifstream in;
 	std::ofstream out;
 	in.open("input4.txt");
@@ -346,35 +355,109 @@ void lab3task4() {
 
 			}
 			else if (num < b) {
-				(num);
+				queueWrite(queue1End, num);
+				if (queue1 == NULL) queue1 = queue1End;
+
 
 			}
 			else {
-				push_2(num);
+				queueWrite(queue2End, num);
+				if (queue2 == NULL) queue2 = queue2End;
 
 			}
 
 		}
 
-		while (!empty_1()) {
-			pop_1(num);
-			fout << num << ' ';
+		out << "\n";
+		while (queue1 != NULL) {
+			num = queueRead(queue1);
+			out << num << ' ';
 
 		}
 		out << "\n";
-		while (!empty_2()) {
-			pop_2(num);
-			fout << num << ' ';
+		while (queue2 != NULL) {
+			num = queueRead(queue2);
+			out << num << ' '; 
 
 		}
 
 	}
-	std::cout << "output_4.txt готов.\n\n";
+	std::cout << "output4.txt готов.\n\n";
 
 }
 
 void lab3task5() {
 
+	std::ofstream out;
+	std::ifstream in;
+	in.open("input5.txt");
+	out.open("output5.txt");
 
+	int num;
+	std::string s;
+	while (std::getline(in, s)) {
+		Chain3* queue = NULL;
+		Chain3* queueEnd = queue;
+		for (size_t i = 0; i < s.size(); ++i) {
+			if ((int)s[i] > 47 && (int)s[i] < 58) {
+				queueWrite(queueEnd, (int)s[i] - 48);
+				if (queue == NULL) queue = queueEnd;
+			}
+			else {
+				out << s[i];
+
+			}
+
+		}
+
+		while (queue != NULL) {
+			num = queueRead(queue);
+			out << num;
+
+		}
+		out << '\n';
+
+	}
+	std::cout << "output5.txt готов\n\n";
+
+}
+
+int queueRead(Chain*& stack) {
+	int num(stack->data);
+	Chain* temp = stack->next;
+	delete stack;
+	stack = temp;
+
+	return num;
+
+}
+
+void queueWrite(Chain*& stack, int num) {
+	Chain* temp = new Chain;
+	temp->data = num;
+	temp->next = NULL;
+	if (stack == NULL) stack = new Chain;
+	stack->next = temp;
+	stack = temp;
+
+}
+
+int queueRead(Chain3*& stack) {
+	char chr(stack->data);
+	Chain3* temp = stack->next;
+	delete stack;
+	stack = temp;
+
+	return chr;
+
+}
+
+void queueWrite(Chain3*& stack, int num) {
+	Chain3* temp = new Chain3;
+	temp->data = num;
+	temp->next = NULL;
+	if (stack == NULL) stack = new Chain3;
+	stack->next = temp;
+	stack = temp;
 
 }

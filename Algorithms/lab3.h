@@ -51,14 +51,18 @@ bool isDigit(int);
 /// <returns></returns>
 bool isPriority(int, int); 
 
-void chain5PushBack(Chain5*&, char);
+void chain5Write(Chain5*&, char);
 
-void chain5Pop(Chain5*&);
+void chain5Read(Chain5*&);
 
 void lab3task4();
 
 void lab3task5();
 
-void queueRead();
+int queueRead(Chain*&);
 
-void queueWrite();
+void queueWrite(Chain*&, int);
+
+int queueRead(Chain3*&);
+
+void queueWrite(Chain3*&, int);
