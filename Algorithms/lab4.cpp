@@ -416,3 +416,34 @@ BigNumber difference(BigNumber& num1, BigNumber& num2) {
 
 }
 
+/*
+BigNumber division(BigNumber& num1, BigNumber& num2) {
+	if (comparator(num2, num1)) std::cout << "\n\\0"; //если вторая больше
+	else {
+		BigNumber result;
+		BigNumber dividend;
+
+		Digit* digit = num1.first;
+
+		do
+		{
+			addEnd(dividend, digit->data);
+			digit = digit->next;
+
+		} while ((digit != NULL) && (comparator(num2, dividend)));
+
+		if(digit != NULL)
+
+		do
+		{
+			dividend = difference(dividend, num2);
+			
+
+		} while (comparator(dividend, num2));
+
+
+
+	}
+
+}
+*/
