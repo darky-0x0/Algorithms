@@ -3,6 +3,8 @@
 #include "lab1.h"
 #include "lab2.h"
 #include "lab3.h"
+#include "lab4.h"
+#include "lab5.h"
 
 
 int main() {
@@ -29,6 +31,16 @@ int main() {
 		}
 		case 3: {
 			mainMenuLab3();
+			break;
+
+		}
+		case 4: {
+			mainMenuLab4();
+			break;
+
+		}
+		case 5: {
+			mainMenuLab5();
 			break;
 
 		}
