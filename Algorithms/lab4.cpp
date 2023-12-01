@@ -71,7 +71,26 @@ void lab4task2() {
 }
 
 void lab4task3() {
+	BigNumber num1;
+	BigNumber num2;
+	BigNumber result;
+	std::cout << "Введите первое большое число:\n\\";
+	std::string BigNum1; std::getline(std::cin, BigNum1);
+	initNum(num1, BigNum1);
+	std::cout << "Введите второе большое число:\n\\";
+	std::string BigNum2; std::getline(std::cin, BigNum2);
+	initNum(num2, BigNum2);
 
+	if (comparator(num1, num2) == false) {
+		BigNumber temp = num1;
+		num1 = num2;
+		num2 = temp;
+	}
+
+	result = difference(num1, num2);
+
+
+	printBigNum(result);
 
 }
 
@@ -162,7 +181,9 @@ void initNum(BigNumber& num, int n) {
 
 void initNum(BigNumber& num, std::string str) {
 	for (int i = 0; i < str.size(); i++) {
-		if (i == '-') num.positive = false;
+		if (str[i] == '-') {
+			num.positive = false;
+		}
 		else {
 			char chr = str[i];
 			addEnd(num, std::atoi(&chr));
@@ -296,3 +317,102 @@ void printBigNum(BigNumber& num) {
 	}
 
 }
+
+bool comparator(BigNumber& num1, BigNumber& num2) {
+	bool bigOne = NULL;
+	Digit* digit1 = num1.first;
+	Digit* digit2 = num2.first;
+
+	if (num1.positive == false && num2.positive == true) bigOne = false;
+	else if (num2.positive == false && num1.positive == true) bigOne = true;
+	else {
+		while ((digit1 != NULL) && (digit2 != NULL)) {
+			if (bigOne == NULL) {
+				if (digit1 > digit2) bigOne = true;
+				else if (digit1 < digit2) false;
+			}
+			digit1 = digit1->next;
+			digit2 = digit2->next;
+
+		}
+		if (digit1 != NULL || digit2 != NULL) { //проверка по размеру
+			if (digit1 == NULL) bigOne = false;
+			else bigOne = true;
+
+		}
+
+	}
+
+	if (num2.positive == false && num1.positive == false) if (bigOne == true) bigOne = false; else bigOne = true;
+
+	return bigOne;
+
+}
+
+BigNumber difference(BigNumber& num1, BigNumber& num2) {
+	BigNumber result;
+
+	if ((num2.positive == false) && (num1.positive == true)) result = summBigNum(num1, num2);
+	else {
+		if ((num1.positive == false && (num2.positive == false))) {
+			BigNumber temp = num1;
+			num1 = num2;
+			num2 = temp;
+
+		}
+
+		Digit* digit1 = num1.last;
+		Digit* digit2 = num2.last;
+
+		short transfer(0); //занимаем
+		while ((digit1 != NULL) && (digit2 != NULL)) {
+			int temp = digit1->data - digit2->data - transfer;
+			transfer = 0;
+			if (temp < 0) {
+				transfer += 1; //перенос
+				temp += 10; //увеличиваем разряд
+
+			}
+			addBeggin(result, temp);
+
+			digit1 = digit1->prev;
+			digit2 = digit2->prev;
+
+		}
+
+		while (digit1 != NULL) {
+			int temp = digit1->data - transfer;
+			transfer = 0;
+			if (temp < 0) {
+				transfer = abs(temp); //перенос
+				temp += 10; //увеличиваем разряд
+
+			}
+			if (!(digit1->prev == NULL && temp == 0)) addBeggin(result, temp);
+
+			digit1 = digit1->prev;
+
+		}
+
+		while (digit2 != NULL) {
+			int temp = digit2->data - transfer;
+			transfer = 0;
+			if (temp < 0) {
+				transfer = abs(temp); //перенос
+				temp += 10; //увеличиваем разряд
+
+			}
+			if (digit2->prev != NULL) addBeggin(result, temp);
+
+			digit2 = digit2->prev;
+
+		}
+	}
+
+	delBigNum(num1);
+	delBigNum(num2);
+
+	return result;
+
+}
+

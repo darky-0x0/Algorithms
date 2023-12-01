@@ -43,3 +43,15 @@ void addBeggin(BigNumber&, int);
 void addEnd(BigNumber&, int);
 
 void printBigNum(BigNumber&);
+
+/// <summary>
+/// Число первое больше второго числа?
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+bool comparator(BigNumber&, BigNumber&);
+
+BigNumber difference(BigNumber&, BigNumber&);
+
+BigNumber division(BigNumber&, BigNumber&);
