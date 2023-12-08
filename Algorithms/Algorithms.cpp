@@ -4,7 +4,7 @@
 #include "lab2.h"
 #include "lab3.h"
 #include "lab4.h"
-#include "lab5.h"
+
 
 
 int main() {
@@ -40,7 +40,7 @@ int main() {
 
 		}
 		case 5: {
-			mainMenuLab5();
+//			mainMenuLab5();
 			break;
 
 		}

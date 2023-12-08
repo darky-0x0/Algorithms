@@ -106,7 +106,8 @@ void lab4task4() {
 	initNum(num2, BigNum2);
 
 	result = division(num1, num2);
-	printBigNum(result);
+	if(result.first->data != -1) printBigNum(result);
+
 }
 
 
@@ -337,6 +338,7 @@ bool comparator(BigNumber& num1, BigNumber& num2) {
 	else if (num2.positive == false && num1.positive == true) bigOne = true;
 	else {
 		bool oneComparation(false);
+		if (num1.first->data == 0 || num2.first->data == 0) return true;
 		while ((digit1 != NULL) && (digit2 != NULL)) {
 			if (oneComparation == false) { //первое успешное сравнение
 				if(digit1->data != digit2->data) oneComparation = true;
@@ -451,11 +453,16 @@ BigNumber difference(BigNumber& num1, BigNumber& num2) {
 
 BigNumber division(BigNumber& num1, BigNumber& num2) {
 	BigNumber result;
-	if (comparator(num2, num1)) { //если второе больше
+
+	if (num2.first->data == 0) {
+		std::cout << "На 0 делить нельзя";
 		addEnd(result, 0);
-		return result;
+	}
+	else if (num1.positive == true && (comparator(num2, num1))) { //если второе больше
+		addEnd(result, 0);
 	}
 	else {
+		if ((num1.positive == false && num2.positive == true) || (num2.positive == false && num1.positive == true)) result.positive = false;
 		BigNumber dividend;
 
 		Digit* digit = num1.first;
@@ -471,7 +478,7 @@ BigNumber division(BigNumber& num1, BigNumber& num2) {
 			if (digit != NULL) {
 				int i(0);
 
-				while ((digit != NULL) && (comparator(num2, dividend))) { //первый добор делимого
+				while ((digit != NULL) && ((dividend.first == NULL) || (comparator(num2, dividend)))) { //первый добор делимого
 					addEnd(dividend, digit->data);
 					digit = digit->next;
 					i++;
@@ -482,23 +489,38 @@ BigNumber division(BigNumber& num1, BigNumber& num2) {
 				if ((digit != NULL) || (digit == NULL && comparator(dividend, num2))) { //если мы не дошли до конца числа, или дошли и получили верное делимое
 
 					int counter(0);
-					do
-					{
+					while ((dividend.first != NULL) && (dividend.first->data != 0) && ((comparator(dividend, num2)) || (equality(dividend, num2)))) { //вычитаем, пока делимое больше или равен делителю
 						dividend = difference(dividend, num2);
 						counter++;
-					} while ((comparator(dividend, num2)) || (equality(dividend, num2))); //вычитаем, пока делимое больше или равен делителю
+
+					}
 
  					addEnd(result, counter);
 
 				}
-				else if ((digit == NULL) && i != 0) addEnd(result, 0); //если уткнулись в конец числа, но дополнили делимое разрядами, а делимое получилось меньше делителя
+				else if ((digit == NULL) && i != 0) {
+					for (int t = i; i > 0; i--) {
+						addEnd(result, 0); //если уткнулись в конец числа, но дополнили делимое разрядами, а делимое получилось меньше делителя
+					}
+					return result;
+				}
 				else return result;
 			}
-			else return result;
+			else {
+				int counter(0);
+				while ((dividend.first != NULL) && (dividend.first->data != 0) && ((comparator(dividend, num2)) || (equality(dividend, num2)))) { //вычитаем, пока делимое больше или равен делителю
+					dividend = difference(dividend, num2);
+					counter++;
+				}
+				addEnd(result, counter);
+				return result;
+			}
 
 		}
 
 	}
+
+	return result;
 
 }
 

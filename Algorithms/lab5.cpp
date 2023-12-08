@@ -8,7 +8,7 @@ void mainMenuLab5() {
 	switch (taskNum)
 	{
 	case 1: {
-
+		lab5task1();
 		break;
 
 	}
@@ -40,3 +40,26 @@ void mainMenuLab5() {
 	}
 
 }
+
+
+void lab5task1() {
+	
+
+}
+
+/*
+std::vector<Chain*> readFromFile(std::string filename) {
+	std::vector<Chain*> graph;
+	
+	std::ifstream out;
+	out.open(filename);
+
+	while (!out.eof()) {
+		std::istringstream ss(out, cin);
+
+
+	}
+
+
+}
+*/
