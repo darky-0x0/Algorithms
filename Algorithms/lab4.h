@@ -7,7 +7,7 @@
 
 struct Digit {
 
-	int data;
+	int data = 0;
 	Digit* next = NULL;
 	Digit* prev = NULL;
 
@@ -46,11 +46,13 @@ void printBigNum(BigNumber&);
 
 /// <summary>
 /// Число первое больше второго числа?
+/// Число первое больше второго числа?
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
 /// <returns></returns>
 bool comparator(BigNumber&, BigNumber&);
+bool equality(BigNumber&, BigNumber&);
 
 BigNumber difference(BigNumber&, BigNumber&);
 

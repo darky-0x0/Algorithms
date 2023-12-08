@@ -95,8 +95,18 @@ void lab4task3() {
 }
 
 void lab4task4() {
+	BigNumber num1;
+	BigNumber num2;
+	BigNumber result;
+	std::cout << "Введите первое большое число:\n\\";
+	std::string BigNum1; std::getline(std::cin, BigNum1);
+	initNum(num1, BigNum1);
+	std::cout << "Введите второе большое число:\n\\";
+	std::string BigNum2; std::getline(std::cin, BigNum2);
+	initNum(num2, BigNum2);
 
-
+	result = division(num1, num2);
+	printBigNum(result);
 }
 
 
@@ -319,17 +329,19 @@ void printBigNum(BigNumber& num) {
 }
 
 bool comparator(BigNumber& num1, BigNumber& num2) {
-	bool bigOne = NULL;
+	bool bigOne;
 	Digit* digit1 = num1.first;
 	Digit* digit2 = num2.first;
 
 	if (num1.positive == false && num2.positive == true) bigOne = false;
 	else if (num2.positive == false && num1.positive == true) bigOne = true;
 	else {
+		bool oneComparation(false);
 		while ((digit1 != NULL) && (digit2 != NULL)) {
-			if (bigOne == NULL) {
-				if (digit1 > digit2) bigOne = true;
-				else if (digit1 < digit2) false;
+			if (oneComparation == false) { //первое успешное сравнение
+				if(digit1->data != digit2->data) oneComparation = true;
+				if (digit1->data > digit2->data) bigOne = true;
+				else if (digit1->data < digit2->data) bigOne = false;
 			}
 			digit1 = digit1->next;
 			digit2 = digit2->next;
@@ -347,6 +359,17 @@ bool comparator(BigNumber& num1, BigNumber& num2) {
 
 	return bigOne;
 
+}
+
+bool equality(BigNumber& num1, BigNumber& num2) {
+	Digit* digit1 = num1.first;
+	Digit* digit2 = num2.first;
+	while ((digit1 != NULL) && (digit2 != NULL)) {
+		if (digit1->data != digit2->data) return false;
+		digit1 = digit1->next;
+		digit2 = digit2->next;
+	}
+	return true;
 }
 
 BigNumber difference(BigNumber& num1, BigNumber& num2) {
@@ -409,18 +432,28 @@ BigNumber difference(BigNumber& num1, BigNumber& num2) {
 		}
 	}
 
+	while (result.first->data == 0) {
+		Digit* temp = result.first;
+		result.first = temp->next;
+		delete temp;
+		temp = result.first;
+		temp->prev = NULL;
+	}
+
 	delBigNum(num1);
-	delBigNum(num2);
 
 	return result;
 
 }
 
-/*
+
 BigNumber division(BigNumber& num1, BigNumber& num2) {
-	if (comparator(num2, num1)) std::cout << "\n\\0"; //если вторая больше
+	BigNumber result;
+	if (comparator(num2, num1)) { //если второе больше
+		addEnd(result, 0);
+		return result;
+	}
 	else {
-		BigNumber result;
 		BigNumber dividend;
 
 		Digit* digit = num1.first;
@@ -430,20 +463,39 @@ BigNumber division(BigNumber& num1, BigNumber& num2) {
 			addEnd(dividend, digit->data);
 			digit = digit->next;
 
-		} while ((digit != NULL) && (comparator(num2, dividend)));
+		} while ((digit != NULL) && (comparator(num2, dividend))); //первый добор делимого
 
-		if(digit != NULL)
+		while (true) {
+			if (digit != NULL) {
+				int i(0);
+				do
+				{
+					addEnd(dividend, digit->data);
+					digit = digit->next;
+					i++;
+					if(i > 1) addEnd(result, 0); //смещаем на 0, если взяли больше одного десятка
+				} while ((digit != NULL) && (comparator(num2, dividend))); //первый добор делимого
 
-		do
-		{
-			dividend = difference(dividend, num2);
-			
+				if ((digit != NULL) || (digit == NULL && comparator(dividend, num2))) { //если мы не дошли до конца числа, или дошли и получили верное делимое
 
-		} while (comparator(dividend, num2));
+					int counter(0);
+					do
+					{
+						dividend = difference(dividend, num2);
+						counter++;
+					} while ((comparator(dividend, num2)) || (equality(dividend, num2))); //вычитаем, пока делимое больше или равен делителю
 
+ 					addEnd(result, counter);
 
+				}
+				else return result;
+			}
+			else return result;
+
+		}
 
 	}
 
 }
-*/
+
+
