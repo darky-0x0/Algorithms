@@ -329,7 +329,7 @@ void printBigNum(BigNumber& num) {
 }
 
 bool comparator(BigNumber& num1, BigNumber& num2) {
-	bool bigOne;
+	bool bigOne(false);
 	Digit* digit1 = num1.first;
 	Digit* digit2 = num2.first;
 
@@ -369,6 +369,7 @@ bool equality(BigNumber& num1, BigNumber& num2) {
 		digit1 = digit1->next;
 		digit2 = digit2->next;
 	}
+	if (digit1 != NULL || digit2 != NULL) return false; //разные по размеру
 	return true;
 }
 
@@ -432,12 +433,13 @@ BigNumber difference(BigNumber& num1, BigNumber& num2) {
 		}
 	}
 
-	while (result.first->data == 0) {
+	while ((result.first != NULL) && (result.first->data == 0)) {
 		Digit* temp = result.first;
 		result.first = temp->next;
 		delete temp;
 		temp = result.first;
-		temp->prev = NULL;
+		if(temp != NULL) temp->prev = NULL;
+		if (temp == NULL) result.last = NULL;
 	}
 
 	delBigNum(num1);
@@ -468,13 +470,14 @@ BigNumber division(BigNumber& num1, BigNumber& num2) {
 		while (true) {
 			if (digit != NULL) {
 				int i(0);
-				do
-				{
+
+				while ((digit != NULL) && (comparator(num2, dividend))) { //первый добор делимого
 					addEnd(dividend, digit->data);
 					digit = digit->next;
 					i++;
-					if(i > 1) addEnd(result, 0); //смещаем на 0, если взяли больше одного десятка
-				} while ((digit != NULL) && (comparator(num2, dividend))); //первый добор делимого
+					if (i > 1) addEnd(result, 0); //смещаем на 0, если взяли больше одного десятка
+
+				}
 
 				if ((digit != NULL) || (digit == NULL && comparator(dividend, num2))) { //если мы не дошли до конца числа, или дошли и получили верное делимое
 
@@ -488,6 +491,7 @@ BigNumber division(BigNumber& num1, BigNumber& num2) {
  					addEnd(result, counter);
 
 				}
+				else if ((digit == NULL) && i != 0) addEnd(result, 0); //если уткнулись в конец числа, но дополнили делимое разрядами, а делимое получилось меньше делителя
 				else return result;
 			}
 			else return result;
