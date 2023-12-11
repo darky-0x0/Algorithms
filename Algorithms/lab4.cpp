@@ -344,6 +344,7 @@ bool comparator(BigNumber& num1, BigNumber& num2) {
 				if(digit1->data != digit2->data) oneComparation = true;
 				if (digit1->data > digit2->data) bigOne = true;
 				else if (digit1->data < digit2->data) bigOne = false;
+
 			}
 			digit1 = digit1->next;
 			digit2 = digit2->next;
@@ -370,9 +371,11 @@ bool equality(BigNumber& num1, BigNumber& num2) {
 		if (digit1->data != digit2->data) return false;
 		digit1 = digit1->next;
 		digit2 = digit2->next;
+
 	}
 	if (digit1 != NULL || digit2 != NULL) return false; //разные по размеру
 	return true;
+
 }
 
 BigNumber difference(BigNumber& num1, BigNumber& num2) {

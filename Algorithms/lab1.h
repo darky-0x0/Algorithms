@@ -8,8 +8,8 @@
 struct Chain
 {
 
-	int data;
-	Chain* next;
+	int data = 0;
+	Chain* next = NULL;
 
 };
 
