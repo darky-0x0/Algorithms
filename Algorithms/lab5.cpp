@@ -62,7 +62,7 @@ void lab5task1() {
 	std::vector<bool> passedSearchWidth(graph.size(), false);
 	passedSearchWidth[1] = true;
 
-	Chain* queue = new Chain;
+	Chain* queue = NULL;
 
 	SearchWidth(graph, queue, 1, resultSearchWidth, passedSearchWidth);
 
@@ -72,6 +72,8 @@ void lab5task1() {
 	{
 		std::cout << path.first << " -> " << path.second << std::endl;
 	}
+
+	writeGraphToFile(graph, "lab5task1Out.txt");
 
 }
 
@@ -157,6 +159,27 @@ void SearchWidth(std::vector<Chain*> graph, Chain*& queue, int vertex, std::vect
 			paths = paths->next;
 
 		}
+
+	}
+
+}
+
+void writeGraphToFile(std::vector<Chain*> graph, std::string fileName) {
+	std::ofstream out;
+	out.open(fileName);
+
+	for (int i = 1; i < graph.size(); i++) {
+		Chain* vertexesList = graph[i];
+
+		for (int i = 1; i <= graph.size()-1; i++) {
+			if ((vertexesList != NULL) && (i == vertexesList->data)) {
+				out << "1 ";
+				vertexesList = vertexesList->next;
+			}
+			else out << "0 ";
+		}
+
+		out << "\n";
 
 	}
 

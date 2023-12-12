@@ -424,14 +424,15 @@ void lab3task5() {
 
 int queueRead(Chain*& stack) {
 	int num(stack->data);
-	if (stack->next != NULL) {
+	if (stack->next == NULL) {
+		delete stack;
+		stack = NULL;
+
+	}
+	else {
 		Chain* temp = stack->next;
 		delete stack;
 		stack = temp;
-	}
-	else {
-		delete stack;
-		stack = new Chain;
 
 	}
 	
@@ -440,15 +441,16 @@ int queueRead(Chain*& stack) {
 }
 
 void queueWrite(Chain*& stack, int num) {
-	Chain* temp = new Chain;
-	temp->data = num;
-	temp->next = NULL;
-	if (stack->data == 0 && stack->next == NULL) stack = temp;
+	if (stack == NULL) {
+		stack = new Chain;
+		stack->data = num;
+
+	}
 	else {
-		Chain* firstEl = stack;
-		while (stack->next != NULL) stack = stack->next;
-		stack->next = temp;
-		stack = firstEl;
+		Chain* temp = stack;
+		while (temp->next != NULL) temp = temp->next;
+		temp->next = new Chain;
+		temp->next->data = num;
 
 	}
 
@@ -475,7 +477,7 @@ void queueWrite(Chain3*& stack, int num) {
 }
 
 bool queueEmpty(Chain* queue) {
-	if (queue->data == 0 && queue->next == NULL) return true;
+	if (queue == NULL) return true;
 	return false;
 
 }
