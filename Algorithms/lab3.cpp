@@ -21,7 +21,7 @@ void mainMenuLab3() {
 		std::cout << "\nВведите польскую запись на вычисление(как минимум 2 значения вначале):\n\\";
 		std::string str; std::getline(std::cin, str);
 
-		PolishWrite(str); 
+		PolishWrite(str);
 
 		break;
 
@@ -57,7 +57,7 @@ void mainMenuLab3() {
 
 
 void staples(std::string str) {
-	
+
 	bool isCorrect(true);
 
 	Chain3* stack = NULL;
@@ -97,7 +97,7 @@ void staples(std::string str) {
 float PolishWrite(std::string str) {
 
 	Chain4* stack = NULL;
-	char numbersType(NULL); 
+	char numbersType(NULL);
 	bool isError(NULL);
 
 	for (int i = 0; (i < str.size()) && (numbersType == NULL); i++) { //автоопрделние типов чисел
@@ -118,7 +118,7 @@ float PolishWrite(std::string str) {
 
 		for (int i = 0; (i < str.size()) && isError == false; i++) { //идём до конца строки или до первой ошибки
 			bool isNegativeNumber = false;
-			if (str[i] == '-' && i < str.size()-1 && numbersType == 'b' && str[i + 1] != ' ') isNegativeNumber = true; //определение унарного/бинарного минуса (если во втором случае после минуса стоит число, а не пробел, значит он унарный)
+			if (str[i] == '-' && i < str.size() - 1 && numbersType == 'b' && str[i + 1] != ' ') isNegativeNumber = true; //определение унарного/бинарного минуса (если во втором случае после минуса стоит число, а не пробел, значит он унарный)
 
 			if (isDigit(str[i]) || isNegativeNumber) { //добавление числа в стек
 				Chain4* temp = new Chain4;
@@ -145,7 +145,7 @@ float PolishWrite(std::string str) {
 				}
 
 			}
-			else if(str[i] != ' ') { //операции над стеком
+			else if (str[i] != ' ') { //операции над стеком
 				if (stack == NULL || stack->next == NULL) { //если в стеке меньше двух ячеек
 					isError = true;
 
@@ -168,9 +168,9 @@ float PolishWrite(std::string str) {
 			}
 
 		}
-		
+
 		setlocale(0, "");
-	
+
 	}
 
 
@@ -179,7 +179,7 @@ float PolishWrite(std::string str) {
 		return stack->data;
 
 	}
-	else if(isError == true) std::cout << "\nНеверный формат выражения";
+	else if (isError == true) std::cout << "\nНеверный формат выражения";
 
 }
 
@@ -377,7 +377,7 @@ void lab3task4() {
 		out << "\n";
 		while (queue2 != NULL) {
 			num = queueRead(queue2);
-			out << num << ' '; 
+			out << num << ' ';
 
 		}
 
@@ -424,10 +424,17 @@ void lab3task5() {
 
 int queueRead(Chain*& stack) {
 	int num(stack->data);
-	Chain* temp = stack->next;
-	delete stack;
-	stack = temp;
+	if (stack->next != NULL) {
+		Chain* temp = stack->next;
+		delete stack;
+		stack = temp;
+	}
+	else {
+		delete stack;
+		stack = new Chain;
 
+	}
+	
 	return num;
 
 }
@@ -436,9 +443,14 @@ void queueWrite(Chain*& stack, int num) {
 	Chain* temp = new Chain;
 	temp->data = num;
 	temp->next = NULL;
-	if (stack == NULL) stack = new Chain;
-	stack->next = temp;
-	stack = temp;
+	if (stack->data == 0 && stack->next == NULL) stack = temp;
+	else {
+		Chain* firstEl = stack;
+		while (stack->next != NULL) stack = stack->next;
+		stack->next = temp;
+		stack = firstEl;
+
+	}
 
 }
 
@@ -459,5 +471,11 @@ void queueWrite(Chain3*& stack, int num) {
 	if (stack == NULL) stack = new Chain3;
 	stack->next = temp;
 	stack = temp;
+
+}
+
+bool queueEmpty(Chain* queue) {
+	if (queue->data == 0 && queue->next == NULL) return true;
+	return false;
 
 }

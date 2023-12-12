@@ -45,13 +45,30 @@ void mainMenuLab5() {
 void lab5task1() {
 	std::vector<Chain*> graph;
 	graph = readGraphFromFile("lab5task1.txt");
-	std::vector<std::pair<int, int>> result;
-	std::vector<bool> passed(graph.size(), false);
-	passed[1] = true;
+	std::vector<std::pair<int, int>> resultSearchDepth;
+	std::vector<bool> passedSearchDepth(graph.size(), false);
+	passedSearchDepth[1] = true;
 
-	SearchDepth(graph, 1, result, passed);
+	SearchDepth(graph, 1, resultSearchDepth, passedSearchDepth);
 
-	for (std::pair<int, int> path : result)
+	std::cout << "\n\\Поиск в глубину:\n\\";
+
+	for (std::pair<int, int> path : resultSearchDepth)
+	{
+		std::cout << path.first << " -> " << path.second << std::endl;
+	}
+
+	std::vector<std::pair<int, int>> resultSearchWidth;
+	std::vector<bool> passedSearchWidth(graph.size(), false);
+	passedSearchWidth[1] = true;
+
+	Chain* queue = new Chain;
+
+	SearchWidth(graph, queue, 1, resultSearchWidth, passedSearchWidth);
+
+	std::cout << "\n\\Поиск в ширину:\n\\";
+
+	for (std::pair<int, int> path : resultSearchWidth)
 	{
 		std::cout << path.first << " -> " << path.second << std::endl;
 	}
@@ -115,6 +132,31 @@ void SearchDepth(std::vector<Chain*> graph, int vertex, std::vector<std::pair<in
 			
 		}
 		paths = paths->next;
+
+	}
+
+}
+
+void SearchWidth(std::vector<Chain*> graph, Chain*& queue, int vertex, std::vector<std::pair<int, int>>& result, std::vector<bool>& passed) {
+	Chain* paths = graph[vertex];
+	passed[vertex] = true;
+
+	queueWrite(queue, vertex);
+
+	while (!queueEmpty(queue)) {
+		vertex = queueRead(queue);
+		Chain* paths = graph[vertex];
+
+		while (paths != NULL) {
+			if (!passed[paths->data]) {
+				passed[paths->data] = true;
+				result.push_back(std::pair<int, int>(vertex, paths->data));
+				queueWrite(queue, paths->data);
+
+			}
+			paths = paths->next;
+
+		}
 
 	}
 

@@ -49,7 +49,7 @@ bool isDigit(int);
 /// <param name="op1 - junior"></param>
 /// <param name="op2 - senior"></param>
 /// <returns></returns>
-bool isPriority(int, int); 
+bool isPriority(int, int);
 
 void chain5Write(Chain5*&, char);
 
@@ -66,3 +66,5 @@ void queueWrite(Chain*&, int);
 int queueRead(Chain3*&);
 
 void queueWrite(Chain3*&, int);
+
+bool queueEmpty(Chain*);
